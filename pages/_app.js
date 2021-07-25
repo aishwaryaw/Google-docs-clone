@@ -5,7 +5,7 @@ import { Provider } from 'next-auth/client'
 import '../styles.css';
 import ProgressBar from "@badrap/bar-of-progress";
 import Router from "next/router";
-
+import {DocumentsProvider} from '../context';
 const progress = new ProgressBar({
   size: 2,
   color: "blue",
@@ -28,7 +28,9 @@ function MyApp({ Component, pageProps }) {
         rel="stylesheet"
         />
       </Head> 
+      <DocumentsProvider>
       <Component {...pageProps} />
+      </DocumentsProvider>
   </Provider>
   )
 }

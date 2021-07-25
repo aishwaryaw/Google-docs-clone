@@ -8,11 +8,10 @@ import Login from '../components/Login';
 import Modal from '@material-tailwind/react/Modal';
 import ModalBody from '@material-tailwind/react/ModalBody';
 import ModalFooter from '@material-tailwind/react/ModalFooter';
-import { useState } from 'react';
-import {db} from '../firebase';
+import { useState } from 'react'
 import firebase from 'firebase';
-import {useCollection} from 'react-firebase-hooks/firestore';
 import Document from '../components/Document';
+import {useDocumentsProviderValue} from '../context';
 
 export default function Home() {
 
@@ -21,18 +20,15 @@ export default function Home() {
   const [input, setInput] = useState('');
 
   const [showModal, setShowModal] = useState(false);
-
-  const [snapshot] = useCollection(db.collection('userDocs').doc(session?.user?.email).collection('documents').orderBy('timestamp','desc'));
+  const {documents, addDocuments}= useDocumentsProviderValue();
 
   const createDocument = () => {
     if(!input) {
       setShowModal(false);
       return;
     }
-    db.collection('userDocs').doc(session.user.email).collection('documents').add({
-      filename: input,
-      timestamp : firebase.firestore.FieldValue.serverTimestamp()
-    });
+    addDocuments(input,firebase.firestore.FieldValue.serverTimestamp());
+
     setShowModal(false);
   }
 
@@ -91,7 +87,7 @@ export default function Home() {
             <p className="mr-12">Date created</p>
             <Icon name="folder" size="3xl" color="gray"/>
           </div>
-          {snapshot?.docs.map(doc=> (
+          {documents?.map(doc=> (
           <Document key = {doc.id} filename={doc.data().filename} date={doc.data().timestamp} id={doc.id} />
         ))}
         </div>
