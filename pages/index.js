@@ -30,12 +30,12 @@ export default function Home() {
       return;
     }
     addDocuments(input,firebase.firestore.FieldValue.serverTimestamp());
-
+    setInput('');
     setShowModal(false);
   }
 
     const modal = (
-      <Modal size="sm" active = {showModal} toggler = {()=>setShowModal(false)}>
+      <Modal size="sm" active = {showModal} toggler = {()=>{setShowModal(false); setInput('');}}>
             <ModalBody>
             <input 
               type="text" 
@@ -48,7 +48,9 @@ export default function Home() {
             </ModalBody>
 
             <ModalFooter>
-                <Button buttonType="link" color="blue" ripple="dark" onClick={(e)=> setShowModal(false)}>Cancel</Button>
+                <Button buttonType="link" color="blue" ripple="dark" onClick={(e)=> {
+                  setShowModal(false);
+                  setInput('');}}>Cancel</Button>
                 <Button color="blue" ripple="dark" onClick={createDocument}>Create</Button>
             </ModalFooter>
     </Modal>
