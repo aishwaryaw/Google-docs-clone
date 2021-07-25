@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import Icon from '@material-tailwind/react/Icon';
 import Button from '@material-tailwind/react/Button';
 import { signOut, useSession } from 'next-auth/client';

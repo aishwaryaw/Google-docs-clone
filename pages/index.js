@@ -5,21 +5,23 @@ import Icon from '@material-tailwind/react/Icon';
 import Image from '@material-tailwind/react/Image';
 import {useSession,getSession} from 'next-auth/client';
 import Login from '../components/Login';
-import Modal from '@material-tailwind/react/Modal';
-import ModalBody from '@material-tailwind/react/ModalBody';
-import ModalFooter from '@material-tailwind/react/ModalFooter';
 import { useState } from 'react'
 import firebase from 'firebase';
 import Document from '../components/Document';
 import {useDocumentsProviderValue} from '../context';
+import Modal from '@material-tailwind/react/Modal';
+import ModalBody from '@material-tailwind/react/ModalBody';
+import ModalFooter from '@material-tailwind/react/ModalFooter';
+
 
 export default function Home() {
 
   const [session,loading] = useSession();
 
   const [input, setInput] = useState('');
-
+ 
   const [showModal, setShowModal] = useState(false);
+  
   const {documents, addDocuments}= useDocumentsProviderValue();
 
   const createDocument = () => {
@@ -32,27 +34,25 @@ export default function Home() {
     setShowModal(false);
   }
 
-  const modal = (
-    <Modal size="sm" active = {showModal} toggler = {()=>setShowModal(false)}>
-      <ModalBody>
-        <input 
-        type="text" 
-        value={input} 
-        onChange={(e)=> setInput(e.target.value)} 
-        placeholder="Enter document name"
-        className="w-full outline-none"
-        onKeyDown = {(e) => e.key === 'Enter' && createDocument()}
-        ></input>
-      </ModalBody>
+    const modal = (
+      <Modal size="sm" active = {showModal} toggler = {()=>setShowModal(false)}>
+            <ModalBody>
+            <input 
+              type="text" 
+              value={input} 
+              onChange={(e)=> setInput(e.target.value)} 
+              placeholder="Enter document name"
+              className="w-full outline-none"
+              onKeyDown = {(e) => e.key === 'Enter' && createDocument()}
+            ></input>
+            </ModalBody>
 
-      <ModalFooter>
-        <Button buttonType="link" color="blue" ripple="dark" onClick={(e)=> setShowModal(false)}>Cancel</Button>
-        <Button color="blue" ripple="dark" onClick={createDocument}>Create</Button>
-
-      </ModalFooter>
-
+            <ModalFooter>
+                <Button buttonType="link" color="blue" ripple="dark" onClick={(e)=> setShowModal(false)}>Cancel</Button>
+                <Button color="blue" ripple="dark" onClick={createDocument}>Create</Button>
+            </ModalFooter>
     </Modal>
-  )
+    )
 
 
   if(!session) return <Login/>
